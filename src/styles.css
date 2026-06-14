@@ -1,0 +1,417 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ============================================================
+ * Sketchbook & Watercolor design system (Formation Négociation)
+ * Additive — coexiste avec les tokens existants. Ne pas supprimer.
+ * ============================================================ */
+
+@theme inline {
+  --font-display: "Caveat", cursive;
+  --color-paper: var(--paper);
+  --color-marker-teal: var(--marker-teal);
+  --color-marker-amber: var(--marker-amber);
+  --color-marker-rose: var(--marker-rose);
+  --color-marker-green: var(--marker-green);
+  --color-marker-red: var(--marker-red);
+  --color-marker-violet: var(--marker-violet);
+}
+
+:root {
+  --paper: #FFFFFF;
+  --marker-teal:   #2DD4BF;
+  --marker-amber:  #F59E0B;
+  --marker-rose:   #F472B6;
+  --marker-green:  #10B981;
+  --marker-red:    #EF4444;
+  --marker-violet: #8B5CF6;
+  --wash-yellow: #FEF9C340;
+  --wash-teal:   #CCFBF140;
+  --sketch-radius-soft: 255px 15px 225px 15px / 15px 225px 15px 255px;
+}
+
+/* Washes aquarelle fixés en arrière-plan, visibles uniquement sur les routes négociation */
+.nego-bg::before, .nego-bg::after {
+  content: ""; position: fixed; pointer-events: none; z-index: 0; filter: blur(40px);
+}
+.nego-bg::before {
+  top: -10%; left: -10%; width: 55vw; height: 55vw;
+  background: radial-gradient(circle at 30% 30%, var(--wash-yellow), transparent 65%);
+}
+.nego-bg::after {
+  bottom: -15%; right: -10%; width: 60vw; height: 60vw;
+  background: radial-gradient(circle at 70% 70%, var(--wash-teal), transparent 65%);
+}
+.nego-bg > * { position: relative; z-index: 1; }
+
+@utility sketch-card-soft {
+  background: var(--paper);
+  border: 1.5px solid var(--ink);
+  border-radius: var(--sketch-radius-soft);
+  padding: 1.25rem;
+  box-shadow: 3px 4px 0 rgba(0,0,0,0.07);
+}
+
+@utility sketch-btn {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  line-height: 1;
+  padding: 0.6rem 1.4rem;
+  background: var(--paper);
+  color: var(--ink);
+  border: 1.5px solid var(--ink);
+  border-radius: 18px 4px 22px 6px / 6px 20px 4px 18px;
+  transform: rotate(-0.5deg);
+  transition: transform .15s ease, background-color .15s ease;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+@utility sketch-btn-primary {
+  background: var(--marker-teal);
+}
+
+@utility sketch-btn-red {
+  background: var(--marker-red);
+  color: var(--paper);
+}
+
+@utility handwritten {
+  font-family: var(--font-display);
+}
+
+@keyframes page-fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.page-fade { animation: page-fade-in 200ms ease-out; }
+
+@keyframes tcg-shake {
+  0%,100% { transform: translateX(0); }
+  25%     { transform: translateX(-2px); }
+  75%     { transform: translateX(2px); }
+}
+
+@keyframes confetti-fall {
+  0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(120px) rotate(360deg); opacity: 0; }
+}
+
+@keyframes nego-pulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(16,185,129,0.5); }
+  50%     { box-shadow: 0 0 0 8px rgba(16,185,129,0); }
+}
+
+@keyframes nego-scratch {
+  from { stroke-dashoffset: 400; }
+  to   { stroke-dashoffset: 0; }
+}
+@keyframes nego-stain {
+  from { transform: scale(0); opacity: 0; }
+  to   { transform: scale(1); opacity: 0.55; }
+}
+
+/*
+ * Design system — Négociation trainer.
+ * Inspired by Evolution of Trust: warm cream canvas, deep navy ink,
+ * soft teal primary, and the satisfaction gradient (red → orange → yellow → green)
+ * used on agent rings and the overall conviction gauge.
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+  --font-sans: "Nunito", "Quicksand", ui-rounded, ui-sans-serif, system-ui, sans-serif;
+  --font-hand: "Caveat", "Kalam", "Comic Sans MS", cursive;
+  --font-sketch: "Kalam", "Caveat", cursive;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+  --color-cream: var(--cream);
+  --color-ink: var(--ink);
+  --color-conviction-0: var(--conviction-0);
+  --color-conviction-40: var(--conviction-40);
+  --color-conviction-60: var(--conviction-60);
+  --color-conviction-80: var(--conviction-80);
+  --color-violet-pitch: var(--violet-pitch);
+  --color-violet-pitch-soft: var(--violet-pitch-soft);
+  --color-postit: var(--postit);
+  --color-postit-pink: var(--postit-pink);
+  --color-postit-blue: var(--postit-blue);
+  --color-paper: var(--paper);
+  --color-ink-soft: var(--ink-soft);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+  --radius: 1rem;
+  /* Cream canvas + deep navy ink */
+  --cream: oklch(0.972 0.018 85);
+  --ink: oklch(0.255 0.03 270);
+
+  --background: var(--cream);
+  --foreground: var(--ink);
+  --card: oklch(0.99 0.01 85);
+  --card-foreground: var(--ink);
+  --popover: oklch(0.99 0.01 85);
+  --popover-foreground: var(--ink);
+
+  /* Soft teal primary */
+  --primary: oklch(0.62 0.11 210);
+  --primary-foreground: oklch(0.99 0.005 85);
+
+  --secondary: oklch(0.93 0.02 85);
+  --secondary-foreground: var(--ink);
+  --muted: oklch(0.94 0.015 85);
+  --muted-foreground: oklch(0.5 0.03 270);
+  --accent: oklch(0.9 0.05 200);
+  --accent-foreground: var(--ink);
+  --destructive: oklch(0.6 0.22 27);
+  --destructive-foreground: oklch(0.984 0.003 247.858);
+  --border: oklch(0.88 0.02 85);
+  --input: oklch(0.92 0.02 85);
+  --ring: oklch(0.62 0.11 210);
+
+  /* Satisfaction gradient stops */
+  --conviction-0: oklch(0.62 0.22 25);   /* red */
+  --conviction-40: oklch(0.72 0.17 55);  /* orange */
+  --conviction-60: oklch(0.85 0.16 95);  /* yellow */
+  --conviction-80: oklch(0.7 0.17 150);  /* green */
+
+  /* Pitch / sketchbook tokens */
+  --violet-pitch: oklch(0.58 0.21 295);
+  --violet-pitch-soft: oklch(0.85 0.08 295);
+  --postit: oklch(0.96 0.12 100);
+  --postit-pink: oklch(0.9 0.08 10);
+  --postit-blue: oklch(0.9 0.06 230);
+  --paper: oklch(0.985 0.012 85);
+  --ink-soft: oklch(0.45 0.04 270);
+  --shadow-sketch: 2px 3px 0 oklch(0.255 0.03 270 / 0.12);
+  --shadow-sketch-lg: 4px 6px 0 oklch(0.255 0.03 270 / 0.15);
+  --gradient-watercolor: radial-gradient(
+    ellipse at top left,
+    oklch(0.92 0.08 295 / 0.4),
+    transparent 60%
+  ), radial-gradient(ellipse at bottom right, oklch(0.9 0.08 200 / 0.3), transparent 60%);
+
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: var(--cream);
+  --sidebar-foreground: var(--ink);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--accent);
+  --sidebar-accent-foreground: var(--accent-foreground);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
+}
+
+.dark {
+  --background: oklch(0.129 0.042 264.695);
+  --foreground: oklch(0.984 0.003 247.858);
+  --card: oklch(0.208 0.042 265.755);
+  --card-foreground: oklch(0.984 0.003 247.858);
+  --popover: oklch(0.208 0.042 265.755);
+  --popover-foreground: oklch(0.984 0.003 247.858);
+  --primary: oklch(0.929 0.013 255.508);
+  --primary-foreground: oklch(0.208 0.042 265.755);
+  --secondary: oklch(0.279 0.041 260.031);
+  --secondary-foreground: oklch(0.984 0.003 247.858);
+  --muted: oklch(0.279 0.041 260.031);
+  --muted-foreground: oklch(0.704 0.04 256.788);
+  --accent: oklch(0.279 0.041 260.031);
+  --accent-foreground: oklch(0.984 0.003 247.858);
+  --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: oklch(0.984 0.003 247.858);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.551 0.027 264.364);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.208 0.042 265.755);
+  --sidebar-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-accent: oklch(0.279 0.041 260.031);
+  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.551 0.027 264.364);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv11";
+  }
+
+  h1, h2, h3, h4 {
+    letter-spacing: -0.01em;
+  }
+}
+
+/* Gauge / avatar gradient utility — mapped to the satisfaction palette */
+@utility gradient-conviction {
+  background-image: linear-gradient(
+    90deg,
+    var(--color-conviction-0) 0%,
+    var(--color-conviction-40) 40%,
+    var(--color-conviction-60) 60%,
+    var(--color-conviction-80) 85%
+  );
+}
+
+@utility paper-bg {
+  background-color: var(--paper);
+  background-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent calc(1.75rem - 1px),
+    oklch(0.62 0.11 210 / 0.12) calc(1.75rem - 1px),
+    oklch(0.62 0.11 210 / 0.12) 1.75rem
+  );
+  background-size: 100% 1.75rem;
+}
+
+@utility card-sketch {
+  background-color: var(--card);
+  border: 1.5px solid var(--ink);
+  border-radius: 0.75rem;
+  box-shadow: var(--shadow-sketch);
+  padding: 1rem;
+}
+
+@utility card-sketch-lg {
+  background-color: var(--card);
+  border: 1.5px solid var(--ink);
+  border-radius: 1rem;
+  box-shadow: var(--shadow-sketch-lg);
+  padding: 1.25rem;
+}
+
+@utility postit {
+  background-color: var(--postit);
+  border: 1px solid oklch(0.255 0.03 270 / 0.15);
+  box-shadow: var(--shadow-sketch);
+  padding: 0.75rem 1rem;
+  font-family: var(--font-hand);
+  font-size: 1.05rem;
+  line-height: 1.35;
+  border-radius: 0.25rem;
+}
+
+@utility postit-pink {
+  background-color: var(--postit-pink);
+  border: 1px solid oklch(0.255 0.03 270 / 0.15);
+  box-shadow: var(--shadow-sketch);
+  padding: 0.75rem 1rem;
+  font-family: var(--font-hand);
+  border-radius: 0.25rem;
+}
+
+@utility postit-blue {
+  background-color: var(--postit-blue);
+  border: 1px solid oklch(0.255 0.03 270 / 0.15);
+  box-shadow: var(--shadow-sketch);
+  padding: 0.75rem 1rem;
+  font-family: var(--font-hand);
+  border-radius: 0.25rem;
+}
+
+@utility tilt-1 {
+  transform: rotate(1deg);
+}
+
+@utility tilt-neg-1 {
+  transform: rotate(-1deg);
+}
+
+@utility tilt-2 {
+  transform: rotate(2deg);
+}
+
+@utility tilt-neg-2 {
+  transform: rotate(-2deg);
+}
+
+@utility font-hand {
+  font-family: var(--font-hand);
+}
+
+@utility font-sketch {
+  font-family: var(--font-sketch);
+}
+
+@utility badge-stamp {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.6rem;
+  border: 1.5px solid var(--violet-pitch);
+  color: var(--violet-pitch);
+  font-family: var(--font-hand);
+  font-weight: 700;
+  font-size: 0.9rem;
+  border-radius: 0.25rem;
+  transform: rotate(-2deg);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+@utility ink-underline {
+  background-image: linear-gradient(to right, var(--violet-pitch) 0, var(--violet-pitch) 100%);
+  background-repeat: no-repeat;
+  background-size: 100% 3px;
+  background-position: 0 100%;
+  padding-bottom: 2px;
+}
