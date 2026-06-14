@@ -11,6 +11,7 @@ import { SketchInput } from "@/components/sketch/SketchField";
 import { Highlighter } from "@/components/sketch/Highlighter";
 import { SketchStroke } from "@/components/sketch/SketchStroke";
 import { riseIn, stagger } from "@/lib/motion";
+import { CommitteeAnimation } from "@/components/auth/CommitteeAnimation";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
@@ -68,8 +69,10 @@ function AuthPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12">
-      <motion.div
+    <div className="relative min-h-screen w-full grid grid-cols-1 lg:grid-cols-[46fr_54fr] overflow-hidden">
+      {/* LEFT PAGE — form */}
+      <div className="relative flex items-center justify-center px-4 py-10 lg:py-12">
+        <motion.div
         variants={stagger}
         initial="initial"
         animate="animate"
@@ -126,7 +129,30 @@ function AuthPage() {
         <motion.p variants={riseIn} className="mt-7 text-center font-hand text-[var(--ink-soft)] text-lg">
           Un carnet d'entraînement, pas un logiciel.
         </motion.p>
-      </motion.div>
+        </motion.div>
+
+        {/* Mobile static strip */}
+        <div className="lg:hidden absolute inset-x-0 top-0 h-28 -z-10 opacity-60">
+          <CommitteeAnimation staticFrame />
+        </div>
+      </div>
+
+      {/* SPINE */}
+      <div
+        aria-hidden
+        className="hidden lg:block absolute left-[46%] top-0 bottom-0 w-px"
+        style={{
+          background: "repeating-linear-gradient(to bottom, var(--ink-faint) 0 6px, transparent 6px 12px)",
+          boxShadow: "2px 0 8px -4px var(--shadow-color), -2px 0 8px -4px var(--shadow-color)",
+          pointerEvents: "none",
+          zIndex: 5,
+        }}
+      />
+
+      {/* RIGHT PAGE — committee animation (desktop only) */}
+      <div className="hidden lg:block relative" style={{ isolation: "isolate" }}>
+        <CommitteeAnimation />
+      </div>
     </div>
   );
 }
