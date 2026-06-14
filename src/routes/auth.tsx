@@ -65,6 +65,14 @@ function AuthPage() {
     toast.success("Compte créé. Vérifiez votre email pour l'activer.");
   }
 
+  async function handleGuest() {
+    setLoading(true);
+    const { error } = await supabase.auth.signInAnonymously();
+    setLoading(false);
+    if (error) return toast.error(error.message);
+    navigate({ to: "/profiles" });
+  }
+
   return (
     <div className="relative min-h-screen w-full grid grid-cols-1 lg:grid-cols-[46fr_54fr] overflow-hidden">
       {/* LEFT PAGE — form */}
@@ -108,6 +116,14 @@ function AuthPage() {
                     {loading ? "Connexion…" : "Se connecter"}
                   </SketchButton>
                 </form>
+                <div className="flex items-center gap-3 my-5">
+                  <div className="flex-1 h-px bg-[var(--ink-faint)]" />
+                  <span className="font-hand text-[var(--ink-soft)]">ou</span>
+                  <div className="flex-1 h-px bg-[var(--ink-faint)]" />
+                </div>
+                <SketchButton type="button" variant="ghost" size="lg" className="w-full" disabled={loading} onClick={handleGuest}>
+                  Continuer sans compte (démo)
+                </SketchButton>
               </TabsContent>
 
               <TabsContent value="signup">
