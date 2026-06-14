@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Home, LogOut } from "lucide-react";
 import type { ReactNode } from "react";
 import { BackButton } from "@/components/BackButton";
+import { SketchLogo } from "@/components/SketchLogo";
 
 export function AppShell({ children }: { children: ReactNode }) {
   return (
