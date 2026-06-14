@@ -5,12 +5,20 @@
 @custom-variant dark (&:is(.dark *));
 
 /* ============================================================
- * Sketchbook & Watercolor design system (Formation Négociation)
- * Additive — coexiste avec les tokens existants. Ne pas supprimer.
+ * PREMIUM SKETCHBOOK design system — Ventulate
+ * Hand-drawn warmth on a rigorously engineered skeleton.
+ * The wobble lives ONLY in surface treatment (borders, shadows,
+ * tilts ≤1.5°). Spacing, alignment, and type scale are precise.
  * ============================================================ */
 
 @theme inline {
-  --font-display: "Caveat", cursive;
+  --font-display: "Shantell Sans", "Caveat", cursive;
+  --color-paper-2: var(--paper-2);
+  --color-paper-sunk: var(--paper-sunk);
+  --color-ink-faint: var(--ink-faint);
+  --color-highlight: var(--highlight);
+  --color-marker-blue: var(--marker-blue);
+  --color-marker-pink: var(--marker-pink);
   --color-paper: var(--paper);
   --color-marker-teal: var(--marker-teal);
   --color-marker-amber: var(--marker-amber);
@@ -21,22 +29,69 @@
 }
 
 :root {
-  --paper: #FFFFFF;
-  --marker-teal:   #2DD4BF;
-  --marker-amber:  #F59E0B;
-  --marker-rose:   #F472B6;
-  --marker-green:  #10B981;
-  --marker-red:    #EF4444;
-  --marker-violet: #8B5CF6;
-  --wash-yellow: #FEF9C340;
-  --wash-teal:   #CCFBF140;
-  --sketch-radius-soft: 255px 15px 225px 15px / 15px 225px 15px 255px;
+  /* Paper & surfaces */
+  --paper:        #F8F5EE;
+  --paper-2:      #FFFFFF;
+  --paper-sunk:   #F1ECE1;
+
+  /* Ink — warm charcoal, never pure black */
+  --ink:        #211D1A;
+  --ink-soft:   #6F6259;
+  --ink-faint:  #B4AB9F;
+
+  /* Brand + marker palette */
+  --marker-teal:   #137A6E;
+  --marker-amber:  #F5B700;
+  --marker-red:    #E5484D;
+  --marker-green:  #30A46C;
+  --marker-blue:   #3E63DD;
+  --marker-pink:   #E93D82;
+  --marker-violet: #8E4EC6;
+  --marker-rose:   #E93D82;
+
+  --highlight:    #FFE38C;
+
+  /* Solid offset shadows — the signature */
+  --shadow-sm: 2px 2px 0 var(--ink);
+  --shadow:    4px 4px 0 var(--ink);
+  --shadow-lg: 6px 6px 0 var(--ink);
+  --shadow-color: rgba(33,29,26,0.16);
+
+  /* Asymmetric hand-drawn radii */
+  --r1: 255px 15px 225px 15px / 15px 225px 15px 255px;
+  --r2: 15px 255px 15px 225px / 225px 15px 255px 15px;
+  --r3: 225px 25px 255px 15px / 15px 225px 35px 255px;
+  --r-pill: 145px 30px 120px 28px / 30px 130px 25px 140px;
+  --sketch-radius-soft: var(--r1);
+
+  /* Legacy washes kept for back-compat with .nego-bg */
+  --wash-yellow: color-mix(in srgb, var(--marker-amber) 22%, transparent);
+  --wash-teal:   color-mix(in srgb, var(--marker-teal) 18%, transparent);
+
+  /* Spacing scale */
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px;
+  --s6:32px; --s7:48px; --s8:64px; --s9:96px;
+
+  /* Motion durations */
+  --t-micro: 140ms;
+  --t-base:  260ms;
+  --t-page:  220ms;
 }
 
-/* Washes aquarelle fixés en arrière-plan, visibles uniquement sur les routes négociation */
-.nego-bg::before, .nego-bg::after {
+/* Ambient washes — opt-in per page via .nego-bg or always-on body backdrop */
+.nego-bg::before, .nego-bg::after,
+body::before, body::after {
   content: ""; position: fixed; pointer-events: none; z-index: 0; filter: blur(40px);
 }
+body::before {
+  top: -10%; left: -10%; width: 55vw; height: 55vw;
+  background: radial-gradient(circle at 30% 30%, color-mix(in srgb, var(--marker-amber) 16%, transparent), transparent 65%);
+}
+body::after {
+  bottom: -15%; right: -10%; width: 60vw; height: 60vw;
+  background: radial-gradient(circle at 70% 70%, color-mix(in srgb, var(--marker-teal) 14%, transparent), transparent 65%);
+}
+body > * { position: relative; z-index: 1; }
 .nego-bg::before {
   top: -10%; left: -10%; width: 55vw; height: 55vw;
   background: radial-gradient(circle at 30% 30%, var(--wash-yellow), transparent 65%);
@@ -47,38 +102,81 @@
 }
 .nego-bg > * { position: relative; z-index: 1; }
 
+/* ---- Premium Sketchbook utilities ---- */
+
+@utility sketch-surface {
+  background: var(--paper-2);
+  border: 1.5px solid var(--ink);
+  border-radius: var(--r1);
+  box-shadow: var(--shadow);
+}
+
+@utility sketch-shadow {
+  box-shadow: var(--shadow);
+}
+@utility sketch-shadow-sm {
+  box-shadow: var(--shadow-sm);
+}
+@utility sketch-shadow-lg {
+  box-shadow: var(--shadow-lg);
+}
+
+@utility ink-border {
+  border: 2px solid var(--ink);
+}
+@utility ink-border-thin {
+  border: 1.5px solid var(--ink);
+}
+
+@utility highlighter {
+  background: linear-gradient(transparent 55%, var(--highlight) 55%);
+  padding: 0 0.15em;
+  mix-blend-mode: multiply;
+}
+
+@utility r-1 { border-radius: var(--r1); }
+@utility r-2 { border-radius: var(--r2); }
+@utility r-3 { border-radius: var(--r3); }
+@utility r-pill { border-radius: var(--r-pill); }
+
 @utility sketch-card-soft {
-  background: var(--paper);
+  background: var(--paper-2);
   border: 1.5px solid var(--ink);
   border-radius: var(--sketch-radius-soft);
   padding: 1.25rem;
-  box-shadow: 3px 4px 0 rgba(0,0,0,0.07);
+  box-shadow: var(--shadow);
 }
 
 @utility sketch-btn {
   font-family: var(--font-display);
   font-size: 1.35rem;
+  font-weight: 600;
   line-height: 1;
   padding: 0.6rem 1.4rem;
-  background: var(--paper);
+  background: var(--paper-2);
   color: var(--ink);
-  border: 1.5px solid var(--ink);
-  border-radius: 18px 4px 22px 6px / 6px 20px 4px 18px;
+  border: 2px solid var(--ink);
+  border-radius: var(--r-pill);
+  box-shadow: var(--shadow);
   transform: rotate(-0.5deg);
-  transition: transform .15s ease, background-color .15s ease;
+  transition: transform var(--t-micro) ease, box-shadow var(--t-micro) ease, background-color var(--t-micro) ease;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: .5rem;
 }
+.sketch-btn:hover { transform: translateY(-2px) rotate(0deg); box-shadow: var(--shadow-lg); }
+.sketch-btn:active { transform: translate(4px,4px) rotate(0deg); box-shadow: 0 0 0 var(--ink); }
+.sketch-btn:disabled { color: var(--ink-faint); border-color: var(--ink-faint); box-shadow: none; transform: none; cursor: not-allowed; }
 
 @utility sketch-btn-primary {
   background: var(--marker-teal);
+  color: #fff;
 }
 
 @utility sketch-btn-red {
   background: var(--marker-red);
-  color: var(--paper);
+  color: #fff;
 }
 
 @utility handwritten {
@@ -116,6 +214,16 @@
   to   { transform: scale(1); opacity: 0.55; }
 }
 
+@keyframes sketch-draw {
+  from { stroke-dashoffset: var(--dash, 600); }
+  to   { stroke-dashoffset: 0; }
+}
+
+@keyframes highlight-sweep {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
 /*
  * Design system — Négociation trainer.
  * Inspired by Evolution of Trust: warm cream canvas, deep navy ink,
@@ -131,9 +239,9 @@
   --radius-2xl: calc(var(--radius) + 8px);
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
-  --font-sans: "Nunito", "Quicksand", ui-rounded, ui-sans-serif, system-ui, sans-serif;
-  --font-hand: "Caveat", "Kalam", "Comic Sans MS", cursive;
-  --font-sketch: "Kalam", "Caveat", cursive;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-hand: "Shantell Sans", "Caveat", cursive;
+  --font-sketch: "Shantell Sans", "Caveat", cursive;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -184,32 +292,30 @@
 
 :root {
   --radius: 1rem;
-  /* Cream canvas + deep navy ink */
-  --cream: oklch(0.972 0.018 85);
-  --ink: oklch(0.255 0.03 270);
+  --cream: var(--paper);
 
-  --background: var(--cream);
+  --background: var(--paper);
   --foreground: var(--ink);
-  --card: oklch(0.99 0.01 85);
+  --card: var(--paper-2);
   --card-foreground: var(--ink);
-  --popover: oklch(0.99 0.01 85);
+  --popover: var(--paper-2);
   --popover-foreground: var(--ink);
 
-  /* Soft teal primary */
-  --primary: oklch(0.62 0.11 210);
-  --primary-foreground: oklch(0.99 0.005 85);
+  /* Deep teal primary */
+  --primary: var(--marker-teal);
+  --primary-foreground: #FFFFFF;
 
-  --secondary: oklch(0.93 0.02 85);
+  --secondary: var(--paper-sunk);
   --secondary-foreground: var(--ink);
-  --muted: oklch(0.94 0.015 85);
-  --muted-foreground: oklch(0.5 0.03 270);
-  --accent: oklch(0.9 0.05 200);
+  --muted: var(--paper-sunk);
+  --muted-foreground: var(--ink-soft);
+  --accent: color-mix(in srgb, var(--marker-teal) 14%, var(--paper-2));
   --accent-foreground: var(--ink);
-  --destructive: oklch(0.6 0.22 27);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.88 0.02 85);
-  --input: oklch(0.92 0.02 85);
-  --ring: oklch(0.62 0.11 210);
+  --destructive: var(--marker-red);
+  --destructive-foreground: #FFFFFF;
+  --border: var(--ink-faint);
+  --input: var(--paper-sunk);
+  --ring: var(--marker-teal);
 
   /* Satisfaction gradient stops */
   --conviction-0: oklch(0.62 0.22 25);   /* red */
@@ -218,20 +324,18 @@
   --conviction-80: oklch(0.7 0.17 150);  /* green */
 
   /* Pitch / sketchbook tokens */
-  --violet-pitch: oklch(0.58 0.21 295);
-  --violet-pitch-soft: oklch(0.85 0.08 295);
-  --postit: oklch(0.96 0.12 100);
-  --postit-pink: oklch(0.9 0.08 10);
-  --postit-blue: oklch(0.9 0.06 230);
-  --paper: oklch(0.985 0.012 85);
-  --ink-soft: oklch(0.45 0.04 270);
-  --shadow-sketch: 2px 3px 0 oklch(0.255 0.03 270 / 0.12);
-  --shadow-sketch-lg: 4px 6px 0 oklch(0.255 0.03 270 / 0.15);
+  --violet-pitch: var(--marker-violet);
+  --violet-pitch-soft: color-mix(in srgb, var(--marker-violet) 25%, var(--paper-2));
+  --postit: #FFF3A8;
+  --postit-pink: #FFD6E0;
+  --postit-blue: #D6E4FF;
+  --shadow-sketch: var(--shadow-sm);
+  --shadow-sketch-lg: var(--shadow);
   --gradient-watercolor: radial-gradient(
     ellipse at top left,
-    oklch(0.92 0.08 295 / 0.4),
+    color-mix(in srgb, var(--marker-violet) 18%, transparent),
     transparent 60%
-  ), radial-gradient(ellipse at bottom right, oklch(0.9 0.08 200 / 0.3), transparent 60%);
+  ), radial-gradient(ellipse at bottom right, color-mix(in srgb, var(--marker-teal) 14%, transparent), transparent 60%);
 
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
@@ -293,10 +397,39 @@
     color: var(--color-foreground);
     font-family: var(--font-sans);
     font-feature-settings: "ss01", "cv11";
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
 
   h1, h2, h3, h4 {
     letter-spacing: -0.01em;
+    font-family: var(--font-hand);
+    font-weight: 600;
+  }
+
+  /* Paper grain — single fixed overlay */
+  body::before { /* note: a second pseudo is already defined above for the wash */ }
+  /* Custom selection */
+  ::selection { background: var(--highlight); color: var(--ink); }
+
+  /* Custom scrollbar */
+  * { scrollbar-width: thin; scrollbar-color: var(--ink-faint) var(--paper-sunk); }
+  *::-webkit-scrollbar { width: 10px; height: 10px; }
+  *::-webkit-scrollbar-track { background: var(--paper-sunk); }
+  *::-webkit-scrollbar-thumb { background: var(--ink-faint); border-radius: 8px; border: 2px solid var(--paper-sunk); }
+
+  /* Global focus signature */
+  :focus-visible {
+    outline: 2px dashed var(--marker-teal);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
   }
 }
 
