@@ -30,11 +30,8 @@ function AuthPage() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
-      if (data.user) navigate({ to: "/profiles" });
-    });
-  }, [navigate]);
+  // Intentionally no auto-redirect when a session exists — the landing page
+  // is the showcase. Users navigate forward via the form / CTA.
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
