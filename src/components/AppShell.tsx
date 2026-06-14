@@ -13,8 +13,8 @@ export function AppShell({ children }: { children: ReactNode }) {
           <div className="flex items-center gap-3">
             <BackButton />
             <Link to="/profiles" className="flex items-center gap-2">
-              <span className="inline-block h-7 w-7 rounded-full gradient-conviction border-[1.5px] border-ink" />
-              <span className="font-hand text-2xl font-bold tracking-tight">Convaincre</span>
+              <SketchLogo size={28} />
+              <span className="font-hand text-2xl font-bold tracking-tight">Ventulate</span>
             </Link>
           </div>
           <div className="flex items-center gap-2">
