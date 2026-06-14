@@ -1,16 +1,15 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { toast } from "sonner";
+import { SketchLogo } from "@/components/SketchLogo";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Connexion — Convaincre" },
+      { title: "Connexion — Ventulate" },
       { name: "description", content: "Connectez-vous pour entraîner vos négociations." },
     ],
   }),
@@ -63,38 +62,118 @@ function AuthPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4">
-      <div className="w-full max-w-md">
-        <div className="flex items-center justify-center gap-3 mb-6">
-          <span className="inline-block h-10 w-10 rounded-full gradient-conviction" />
-          <h1 className="text-3xl font-bold">Convaincre</h1>
+    <div
+      className="nego-bg min-h-screen flex items-center justify-center px-4 py-10"
+      style={{ backgroundImage: "var(--gradient-watercolor)" }}
+    >
+      <div className="w-full max-w-md page-fade">
+        <div className="flex flex-col items-center gap-3 mb-8">
+          <SketchLogo size={68} />
+          <h1 className="font-hand text-5xl font-bold tracking-tight text-ink leading-none">
+            Ventulate
+          </h1>
+          <p className="handwritten text-center text-ink-soft text-lg max-w-sm">
+            Entraînez vos négociations face à une table d'interlocuteurs simulés.
+          </p>
         </div>
-        <p className="text-center text-muted-foreground mb-8">
-          Entraînez vos négociations face à une table d'interlocuteurs simulés.
-        </p>
-        <div className="rounded-3xl border bg-card p-6 shadow-sm">
+
+        <div className="sketch-card-soft tilt-neg-1" style={{ padding: "1.75rem" }}>
           <Tabs defaultValue="login">
-            <TabsList className="grid grid-cols-2 mb-6 w-full">
-              <TabsTrigger value="login">Connexion</TabsTrigger>
-              <TabsTrigger value="signup">Créer un compte</TabsTrigger>
+            <TabsList
+              className="grid grid-cols-2 mb-6 w-full bg-transparent gap-2 h-auto p-0"
+            >
+              <TabsTrigger
+                value="login"
+                className="sketch-btn data-[state=active]:sketch-btn-primary justify-center"
+              >
+                Connexion
+              </TabsTrigger>
+              <TabsTrigger
+                value="signup"
+                className="sketch-btn data-[state=active]:sketch-btn-primary justify-center"
+              >
+                Créer un compte
+              </TabsTrigger>
             </TabsList>
+
             <TabsContent value="login">
-              <form onSubmit={handleLogin} className="space-y-4">
-                <div className="space-y-2"><Label htmlFor="e1">Email</Label><Input id="e1" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required /></div>
-                <div className="space-y-2"><Label htmlFor="p1">Mot de passe</Label><Input id="p1" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} /></div>
-                <Button type="submit" disabled={loading} className="w-full rounded-full">{loading ? "Connexion…" : "Se connecter"}</Button>
+              <form onSubmit={handleLogin} className="space-y-5">
+                <SketchField id="e1" label="Email" type="email" value={email} onChange={setEmail} />
+                <SketchField id="p1" label="Mot de passe" type="password" value={password} onChange={setPassword} minLength={6} />
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="sketch-btn sketch-btn-primary w-full justify-center disabled:opacity-60"
+                  style={{ fontSize: "1.5rem" }}
+                >
+                  {loading ? "Connexion…" : "Se connecter"}
+                </button>
               </form>
             </TabsContent>
+
             <TabsContent value="signup">
-              <form onSubmit={handleSignup} className="space-y-4">
-                <div className="space-y-2"><Label htmlFor="e2">Email</Label><Input id="e2" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required /></div>
-                <div className="space-y-2"><Label htmlFor="p2">Mot de passe</Label><Input id="p2" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} /></div>
-                <Button type="submit" disabled={loading} className="w-full rounded-full">{loading ? "Création…" : "Créer mon compte"}</Button>
+              <form onSubmit={handleSignup} className="space-y-5">
+                <SketchField id="e2" label="Email" type="email" value={email} onChange={setEmail} />
+                <SketchField id="p2" label="Mot de passe" type="password" value={password} onChange={setPassword} minLength={6} />
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="sketch-btn sketch-btn-primary w-full justify-center disabled:opacity-60"
+                  style={{ fontSize: "1.5rem" }}
+                >
+                  {loading ? "Création…" : "Créer mon compte"}
+                </button>
               </form>
             </TabsContent>
           </Tabs>
         </div>
+
+        <p className="mt-6 text-center handwritten text-ink-soft text-base">
+          Un carnet d'entraînement, pas un logiciel.
+        </p>
       </div>
     </div>
   );
+}
+
+function SketchField({
+  id,
+  label,
+  type,
+  value,
+  onChange,
+  minLength,
+}: {
+  id: string;
+  label: string;
+  type: string;
+  value: string;
+  onChange: (v: string) => void;
+  minLength?: number;
+}) {
+  return (
+    <div className="space-y-1.5">
+      <Label htmlFor={id} className="handwritten text-lg text-ink">
+        {label}
+      </Label>
+      <input
+        id={id}
+        type={type}
+        value={value}
+        required
+        minLength={minLength}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-full bg-paper px-4 py-2.5 font-sans text-base text-ink outline-none focus:bg-[color:var(--wash-teal)] transition-colors"
+        style={{
+          border: "1.5px solid var(--ink)",
+          borderRadius: "14px 4px 16px 6px / 6px 16px 4px 14px",
+          boxShadow: "2px 2px 0 rgba(0,0,0,0.08)",
+        }}
+      />
+    </div>
+  );
+}
+
+// noop guard to keep AuthPage as default export shape
+function _noop() {
 }
