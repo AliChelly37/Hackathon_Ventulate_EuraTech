@@ -15,19 +15,19 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 
 function NotFoundComponent() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+    <div className="flex min-h-screen items-center justify-center px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
+        <h1 className="font-hand text-[7rem] leading-none text-ink">404</h1>
+        <h2 className="mt-2 font-hand text-2xl text-ink">Cette page n'existe pas</h2>
+        <p className="mt-3 text-[var(--ink-soft)]">
+          Elle a peut-être été déchirée du carnet. Revenez à l'accueil.
         </p>
-        <div className="mt-6">
+        <div className="mt-7">
           <Link
             to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="sketch-btn sketch-btn-primary"
           >
-            Go home
+            Revenir à l'accueil
           </Link>
         </div>
       </div>
@@ -43,29 +43,27 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   }, [error]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+    <div className="flex min-h-screen items-center justify-center px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          This page didn't load
-        </h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Something went wrong on our end. You can try refreshing or head back home.
+        <h1 className="font-hand text-3xl text-ink">Cette page n'a pas chargé</h1>
+        <p className="mt-2 text-[var(--ink-soft)]">
+          Un trait s'est cassé. Réessayez, ou retournez à l'accueil.
         </p>
-        <div className="mt-6 flex flex-wrap justify-center gap-2">
+        <div className="mt-6 flex flex-wrap justify-center gap-3">
           <button
             onClick={() => {
               router.invalidate();
               reset();
             }}
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="sketch-btn sketch-btn-primary"
           >
-            Try again
+            Réessayer
           </button>
           <a
             href="/"
-            className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+            className="sketch-btn"
           >
-            Go home
+            Accueil
           </a>
         </div>
       </div>
@@ -95,7 +93,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Kalam:wght@400;700&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Shantell+Sans:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Caveat:wght@500;700&display=swap",
       },
       {
         rel: "stylesheet",
