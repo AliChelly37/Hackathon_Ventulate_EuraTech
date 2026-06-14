@@ -1,10 +1,16 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
-import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import { SketchLogo } from "@/components/SketchLogo";
+import { SketchButton } from "@/components/sketch/SketchButton";
+import { SketchCard } from "@/components/sketch/SketchCard";
+import { SketchInput } from "@/components/sketch/SketchField";
+import { Highlighter } from "@/components/sketch/Highlighter";
+import { SketchStroke } from "@/components/sketch/SketchStroke";
+import { riseIn, stagger } from "@/lib/motion";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
@@ -62,118 +68,65 @@ function AuthPage() {
   }
 
   return (
-    <div
-      className="nego-bg min-h-screen flex items-center justify-center px-4 py-10"
-      style={{ backgroundImage: "var(--gradient-watercolor)" }}
-    >
-      <div className="w-full max-w-md page-fade">
-        <div className="flex flex-col items-center gap-3 mb-8">
-          <SketchLogo size={68} />
-          <h1 className="font-hand text-5xl font-bold tracking-tight text-ink leading-none">
+    <div className="min-h-screen flex items-center justify-center px-4 py-12">
+      <motion.div
+        variants={stagger}
+        initial="initial"
+        animate="animate"
+        className="w-full max-w-md"
+      >
+        <motion.div variants={riseIn} className="flex flex-col items-center text-center gap-3 mb-9">
+          <SketchLogo size={76} />
+          <h1 className="font-hand text-6xl font-semibold text-ink leading-[0.95] tracking-tight">
             Ventulate
           </h1>
-          <p className="handwritten text-center text-ink-soft text-lg max-w-sm">
-            Entraînez vos négociations face à une table d'interlocuteurs simulés.
+          <p className="font-sans text-[var(--ink-soft)] text-lg max-w-sm leading-snug">
+            Entraînez vos négociations face à <Highlighter delay={0.5}>une table d'interlocuteurs</Highlighter> simulés.
           </p>
-        </div>
+          <div className="mt-1 h-3 w-44">
+            <SketchStroke
+              d="M3 6 C 60 1, 130 10, 237 4"
+              width="100%" height={10} viewBox="0 0 240 10"
+              stroke="var(--marker-teal)" strokeWidth={3} delay={0.4} duration={0.7}
+            />
+          </div>
+        </motion.div>
 
-        <div className="sketch-card-soft tilt-neg-1" style={{ padding: "1.75rem" }}>
-          <Tabs defaultValue="login">
-            <TabsList
-              className="grid grid-cols-2 mb-6 w-full bg-transparent gap-2 h-auto p-0"
-            >
-              <TabsTrigger
-                value="login"
-                className="sketch-btn data-[state=active]:sketch-btn-primary justify-center"
-              >
-                Connexion
-              </TabsTrigger>
-              <TabsTrigger
-                value="signup"
-                className="sketch-btn data-[state=active]:sketch-btn-primary justify-center"
-              >
-                Créer un compte
-              </TabsTrigger>
-            </TabsList>
+        <motion.div variants={riseIn}>
+          <SketchCard index={1} className="p-7">
+            <Tabs defaultValue="login">
+              <TabsList className="grid grid-cols-2 mb-6 w-full">
+                <TabsTrigger value="login">Connexion</TabsTrigger>
+                <TabsTrigger value="signup">Créer un compte</TabsTrigger>
+              </TabsList>
 
-            <TabsContent value="login">
-              <form onSubmit={handleLogin} className="space-y-5">
-                <SketchField id="e1" label="Email" type="email" value={email} onChange={setEmail} />
-                <SketchField id="p1" label="Mot de passe" type="password" value={password} onChange={setPassword} minLength={6} />
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="sketch-btn sketch-btn-primary w-full justify-center disabled:opacity-60"
-                  style={{ fontSize: "1.5rem" }}
-                >
-                  {loading ? "Connexion…" : "Se connecter"}
-                </button>
-              </form>
-            </TabsContent>
+              <TabsContent value="login">
+                <form onSubmit={handleLogin} className="space-y-5">
+                  <SketchInput label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required autoComplete="email" />
+                  <SketchInput label="Mot de passe" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} autoComplete="current-password" />
+                  <SketchButton type="submit" disabled={loading} size="lg" className="w-full">
+                    {loading ? "Connexion…" : "Se connecter"}
+                  </SketchButton>
+                </form>
+              </TabsContent>
 
-            <TabsContent value="signup">
-              <form onSubmit={handleSignup} className="space-y-5">
-                <SketchField id="e2" label="Email" type="email" value={email} onChange={setEmail} />
-                <SketchField id="p2" label="Mot de passe" type="password" value={password} onChange={setPassword} minLength={6} />
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="sketch-btn sketch-btn-primary w-full justify-center disabled:opacity-60"
-                  style={{ fontSize: "1.5rem" }}
-                >
-                  {loading ? "Création…" : "Créer mon compte"}
-                </button>
-              </form>
-            </TabsContent>
-          </Tabs>
-        </div>
+              <TabsContent value="signup">
+                <form onSubmit={handleSignup} className="space-y-5">
+                  <SketchInput label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required autoComplete="email" />
+                  <SketchInput label="Mot de passe" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} autoComplete="new-password" hint="Au moins 6 caractères." />
+                  <SketchButton type="submit" disabled={loading} size="lg" className="w-full">
+                    {loading ? "Création…" : "Créer mon compte"}
+                  </SketchButton>
+                </form>
+              </TabsContent>
+            </Tabs>
+          </SketchCard>
+        </motion.div>
 
-        <p className="mt-6 text-center handwritten text-ink-soft text-base">
+        <motion.p variants={riseIn} className="mt-7 text-center font-hand text-[var(--ink-soft)] text-lg">
           Un carnet d'entraînement, pas un logiciel.
-        </p>
-      </div>
+        </motion.p>
+      </motion.div>
     </div>
   );
-}
-
-function SketchField({
-  id,
-  label,
-  type,
-  value,
-  onChange,
-  minLength,
-}: {
-  id: string;
-  label: string;
-  type: string;
-  value: string;
-  onChange: (v: string) => void;
-  minLength?: number;
-}) {
-  return (
-    <div className="space-y-1.5">
-      <Label htmlFor={id} className="handwritten text-lg text-ink">
-        {label}
-      </Label>
-      <input
-        id={id}
-        type={type}
-        value={value}
-        required
-        minLength={minLength}
-        onChange={(e) => onChange(e.target.value)}
-        className="w-full bg-paper px-4 py-2.5 font-sans text-base text-ink outline-none focus:bg-[color:var(--wash-teal)] transition-colors"
-        style={{
-          border: "1.5px solid var(--ink)",
-          borderRadius: "14px 4px 16px 6px / 6px 16px 4px 14px",
-          boxShadow: "2px 2px 0 rgba(0,0,0,0.08)",
-        }}
-      />
-    </div>
-  );
-}
-
-// noop guard to keep AuthPage as default export shape
-function _noop() {
 }
