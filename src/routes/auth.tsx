@@ -69,7 +69,7 @@ function AuthPage() {
   }
 
   return (
-    <div className="min-h-screen w-full grid grid-cols-1 lg:grid-cols-[46fr_54fr] overflow-hidden">
+    <div className="relative min-h-screen w-full grid grid-cols-1 lg:grid-cols-[46fr_54fr] overflow-hidden">
       {/* LEFT PAGE — form */}
       <div className="relative flex items-center justify-center px-4 py-10 lg:py-12">
         <motion.div
